@@ -1,6 +1,6 @@
 {
     "name": "swissup/module-refined-url",
-    "description": "Enhancments for Magento Url Rewrites generation. Prevent erros and inconsistancy.",
+    "description": "Enhancements for Magento Url Rewrites generation. Prevent errors and inconsistency.",
     "keywords": [
         "url rewrite",
         "too long url"
