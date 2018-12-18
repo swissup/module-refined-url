@@ -39,14 +39,14 @@ class ProductUrlPathGenerator
     ) {
         $max = $this->helper->getRequestPathMaxLength();
         if ($max && strlen($result) > $max) {
-            $shortedPath = null;
-            if ($this->helper->isProductUrlShortedEnabled()) {
-                // try to generate shorted path to fit it in database field
-                $shortedPath = $this->generateShortedPath($result, $storeId);
+            $shortenedPath = null;
+            if ($this->helper->isShortenedProductUrlEnabled()) {
+                // try to generate shortened path to fit it in database field
+                $shortenedPath = $this->generateShortenedPath($result, $storeId);
             }
 
-            if ($shortedPath === null) {
-                // unable to generate shorted url or it is disable
+            if ($shortenedPath === null) {
+                // unable to generate shortened url or it is disable
                 throw new LocalizedException(
                     __(
                         "<b>Generated URL is too long!</b>\nEntity type - \"%1\".\nEntity ID - \"%2\".<br />\nGenerated URL path \"%3\" has %4 characters.\nMax allowed length is %5.",
@@ -59,20 +59,20 @@ class ProductUrlPathGenerator
                 );
             }
 
-            return $shortedPath;
+            return $shortenedPath;
         }
 
         return $result;
     }
 
     /**
-     * Generate shorted out url path from original one
+     * Generate shortened url path from original one
      *
      * @param  string      $originalPath
      * @param  int         $storeId
      * @return string|null
      */
-    public function generateShortedPath($originalPath, $storeId)
+    public function generateShortenedPath($originalPath, $storeId)
     {
         $urlSufix = $this->helper->getProductUrlSuffix($storeId);
         $length = $this->helper->getRequestPathMaxLength();
@@ -87,16 +87,16 @@ class ProductUrlPathGenerator
         $i = 0;
         do {
             $i++;
-            $shortedPath = substr($originalPath, 0, $length - 1 - strlen((string)$i))
+            $shortenedPath = substr($originalPath, 0, $length - 1 - strlen((string)$i))
                 . '~'
                 . (string)$i
                 . ($appendSufix ? $urlSufix : '');
-            // check if exists rewrite for shorted path
-            if ($this->helper->getRewrite($shortedPath, $storeId)) {
-                $shortedPath = '';
+            // check if exists rewrite for shortened path
+            if ($this->helper->getRewrite($shortenedPath, $storeId)) {
+                $shortenedPath = '';
             }
-        } while (empty($shortedPath) && $i <= 99);
+        } while (empty($shortenedPath) && $i <= 99);
 
-        return empty($shortedPath) ? null : $shortedPath;
+        return empty($shortenedPath) ? null : $shortenedPath;
     }
 }
