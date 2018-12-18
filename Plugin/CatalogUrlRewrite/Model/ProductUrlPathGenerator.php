@@ -37,10 +37,16 @@ class ProductUrlPathGenerator
         $storeId,
         \Magento\Catalog\Model\Category $category = null
     ) {
-        $maxLength = $this->helper->getRequestPathMaxLength();
-        if ($maxLength && strlen($result) > $maxLength) {
-            $shortedPath = $this->generateShortedPath($result, $storeId);
+        $max = $this->helper->getRequestPathMaxLength();
+        if ($max && strlen($result) > $max) {
+            $shortedPath = null;
+            if ($this->helper->isProductUrlShortedEnabled()) {
+                // try to generate shorted path to fit it in database field
+                $shortedPath = $this->generateShortedPath($result, $storeId);
+            }
+
             if ($shortedPath === null) {
+                // unable to generate shorted url or it is disable
                 throw new LocalizedException(
                     __(
                         "<b>Generated URL is too long!</b>\nEntity type - \"%1\".\nEntity ID - \"%2\".<br />\nGenerated URL path \"%3\" has %4 characters.\nMax allowed length is %5.",
@@ -48,7 +54,7 @@ class ProductUrlPathGenerator
                         $product->getId(),
                         $result,
                         strlen($result),
-                        $maxLength
+                        $max
                     )
                 );
             }

@@ -10,6 +10,8 @@ use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 
 class Data extends AbstractHelper
 {
+    const XML_PATH_PRODUCT_URL_SHORTED = 'swissup_refinedurl/product_url/shorted';
+
     /**
      * @var \Magento\Framework\App\ResourceConnection
      */
@@ -87,5 +89,15 @@ class Data extends AbstractHelper
             UrlRewrite::REQUEST_PATH => ltrim($requestPath, '/'),
             UrlRewrite::STORE_ID => $storeId,
         ]);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isProductUrlShortedEnabled()
+    {
+        return $this->scopeConfig->isSetFlag(
+            self::XML_PATH_PRODUCT_URL_SHORTED
+        );
     }
 }
