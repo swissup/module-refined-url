@@ -1,6 +1,8 @@
 # Refined Url
 
-This module forces Magento to generate product urls where url path is not longer then 255 charaters.
+Module features:
+ -  Force Magento to generate product urls where url path is not longer then 255 charaters.
+ -  Fix Magento duplicate product functionality - response timeout/infinit loop. Module unsets `url_path` value for new product.
 
 **Refined Urls** can help stores with very deep category trees and/or very long product urls. When url path is longer then 255 characters then remaining part of url path cutted of during save into DB table `url_rewrite`. And it can lead to ***'Unique constraint violation found'*** error in future. This error occurs while save product or category and have no info that can help to identify where is the source of the problem.
 
