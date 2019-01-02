@@ -9,7 +9,7 @@
     "version": "0.2.0",
     "license": "OSL-3.0",
     "require": {
-        "magento/module-url-rewrite": "*"
+        "magento/module-catalog-url-rewrite": "*"
     },
     "autoload": {
         "files": [ "registration.php" ],
