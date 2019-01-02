@@ -12,6 +12,11 @@ class ProductUrlPathGenerator
     private $helper;
 
     /**
+     * @var array
+     */
+    private $alreadyShortened = [];
+
+    /**
      * @param \Swissup\RefinedUrl\Helper\Data $helper
      */
     public function __construct(
@@ -95,8 +100,43 @@ class ProductUrlPathGenerator
             if ($this->helper->getRewrite($shortenedPath, $storeId)) {
                 $shortenedPath = '';
             }
+
+            // check if shortened path already used
+            if ($shortenedPath) {
+                if ($this->isAlreadyUsed($shortenedPath, $storeId)) {
+                    $shortenedPath = '';
+                } else {
+                   $this->addAlreadyUsed($shortenedPath, $storeId);
+                }
+            }
+
         } while (empty($shortenedPath) && $i <= 99);
 
         return empty($shortenedPath) ? null : $shortenedPath;
+    }
+
+    /**
+     * Is url path already used as shortened path
+     *
+     * @param  string  $urlPath
+     * @param  int     $storeId
+     * @return boolean
+     */
+    private function isAlreadyUsed($urlPath, $storeId)
+    {
+        return isset($this->alreadyShortened[$storeId])
+            && in_array($urlPath, $this->alreadyShortened[$storeId]);
+    }
+
+    /**
+     * Save url path as one that already used as shortened
+     *
+     * @param  string  $urlPath
+     * @param  int     $storeId
+     */
+    private function addAlreadyUsed($urlPath, $storeId)
+    {
+        $this->alreadyShortened[$storeId][] = $urlPath;
+        return $this;
     }
 }
