@@ -18,6 +18,11 @@ class Data extends AbstractHelper
     protected $resource;
 
     /**
+     * @var \Magento\UrlRewrite\Model\UrlFinderInterface
+     */
+    protected $urlFinder;
+
+    /**
      * @var int
      */
     protected $requestPathLength = null;
